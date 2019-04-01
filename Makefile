@@ -4,7 +4,7 @@ SOURCES=main.c
 CC=avr-gcc
 OBJCOPY=avr-objcopy
 MMCU=attiny13
-COM=COM2
+COM=COM2	
 CFLAGS=-mmcu=$(MMCU) -Wall
 
 $(PROJECT).hex: $(PROJECT).out
