@@ -118,13 +118,9 @@ int main() {
           255
         };
         for (int i = 0; i < 20; i++) {
-          tx(dt, 2);
+          tx(dt, 2);	//send ping response so that the transmitter identifies receiver.
           _delay_ms(10);
         }
-
-        //uint8_t dt2[] = {0x3,(int8_t)100};
-        //tx(dt2,2); _delay_ms(30);
-        //_delay_ms(10);
         state = 2;
         break;
       }
@@ -140,7 +136,7 @@ int main() {
         //if(abs(adcvb[0] - adcvb[1]) > 20)
         // temp_error = (int16_t)((423* 3) - adcv);
         //else 
-        temp_error = (int16_t)((423 * 2) - adcv);
+        temp_error = (int16_t)((423 * 2) - adcv);	//1.1v adc reference. 423 equals to 5V. (4.7/47K voltage divider)
 
         temp_error /= 5;
         if (temp_error > 127) temp_error = 127;
@@ -150,17 +146,15 @@ int main() {
           0x3,
           (int8_t) error
         };
-        tx(dt, 2);
+        tx(dt, 2);	//send error correction packet. 0x03 is error correction packet header. 1 BYTE payload, check WPC documents for more details.
         /*} else {
          uint8_t dt[] = {0x3,(int8_t)1};
          tx(dt,2);
         }*/
       } {
-        uint8_t dt[] = {
-          0x4,
-          0XFF
-        };
-        tx(dt, 2);
+        uint8_t dt[] = {0x4, 0XFF};
+        tx(dt, 2);	//received power indication packet. I am not sure if this is needed or not. Please read the WPC document
+					//for more details. I jut implemented and it worked. But I am not sure if this is the proper way to do it.
       }
       //    _delay_ms(10);
       break;
